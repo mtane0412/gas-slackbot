@@ -1,0 +1,19 @@
+{
+  "timeZone": "Asia/Tokyo",
+  "dependencies": {
+    "libraries": [{
+      "userSymbol": "SlackApp",
+      "libraryId": "1on93YOYfSmV92R5q59NpKmsyWIQD8qnoLYk-gkQBI92C58SPyA2x1-bq",
+      "version": "22"
+    }, {
+      "userSymbol": "Moment",
+      "libraryId": "15hgNOjKHUG4UtyZl9clqBbl23sDvWMS8pfDJOyIapZk5RBqwL3i-rlCo",
+      "version": "9"
+    }]
+  },
+  "webapp": {
+    "access": "ANYONE_ANONYMOUS",
+    "executeAs": "USER_DEPLOYING"
+  },
+  "exceptionLogging": "STACKDRIVER"
+}
