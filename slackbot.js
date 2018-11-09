@@ -16,21 +16,17 @@ function postMessage(channelID, message, options) {
 }
 
 function doPost(e) {
-  console.log(e);
   var postData = JSON.parse(e.postData.getDataAsString());
   var res = {};
-  console.log(postData);
   if (postData.type == 'url_verification') {
-    res = {
-      'challenge': postData.challenge
-    };
+    res.challenge = postData.challenge;
     return ContentService.createTextOutput(JSON.stringify(res)).setMimeType(ContentService.MimeType.JSON);
   }
-  console.log('postData.type: %s', postData.type);
-  console.log('postData.token: %s', postData.token);
 
   if (postData.type == 'nasne' && postData.token == PropertiesService.getScriptProperties().getProperty('NASNE_TOKEN')) {
+    res.errorcode = 0;
     nasneSlackPost(postData);
+    return ContentService.createTextOutput(JSON.stringify(res)).setMimeType(ContentService.MimeType.JSON);
   }
 
   if (prop.getProperty('SLACK_VERIFICATION_TOKEN') != postData.token) {
@@ -79,7 +75,7 @@ function nasneSlackPost(postData) {
           author_name: "nasne番組表",
           author_link: "https://docs.google.com/spreadsheets/d/" + prop.getProperty('NASNE_SHEET_ID') + "/",
           title: programs[i].title,
-          text: programs[i].description, //インデント内に表示されるテスト,
+          text: programs[i].description,
           fields: [{
               "title": "開始時刻",
               "value": startTime.add(1, 'minutes').format('HH:mm'),
@@ -97,13 +93,12 @@ function nasneSlackPost(postData) {
             }
           ]
         }])
-      };
-      postMessage('C8FDF6XK8', text, options);
+        postMessage('C8FDF6XK8', text, options);
+      }
     }
     nasneSheet.getRange(1, 1, values.length, 5).setValues(values);
     console.log('録画%s件', values.length);
   } else if (postData.endpoint === 'HDDInfoGet') {
-    var postData = postData;
     var text = "nasneのHDDが残り少ないです。不要な録画を削除してください。";
     options.attachments = JSON.stringify([{
       color: 'danger',
