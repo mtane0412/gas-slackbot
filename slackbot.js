@@ -81,7 +81,7 @@ function nasneSlackPost(postData) {
       var text = "nasneに番組が追加されたみたいですー！";
       var startTime = Moment.moment(programs[i].startDateTime);
       var endTime = Moment.moment(programs[i].startDateTime).add(programs[i].duration, 'seconds');
-      options.attachments = JSON.stringify({
+      options.attachments = JSON.stringify([{
         color: 'good',
         author_name: "nasne番組表",
         author_link: "https://docs.google.com/spreadsheets/d/" + prop.getProperty('NASNE_SHEET_ID') + "/",
@@ -108,7 +108,7 @@ function nasneSlackPost(postData) {
             "short": true
           }
         ]
-      })
+      }])
       postMessage('C8FDF6XK8', text, options);
     }
   }
@@ -146,7 +146,7 @@ function nasneSlackPost(postData) {
   if (lastData[3] >= 10 && currentData[3] < 10) {
     var text = "nasneのHDDが10%を切りましタ。容量がなくなると新規録画に失敗するノデ、ご注意くださいね。";
     attachments.color = 'warning';
-    options.attachments = JSON.stringify(attachments);
+    options.attachments = JSON.stringify([attachments]);
     postMessage('C8FDF6XK8', text, options);
     console.log('HDD Alert(10%)を送信しました。')
   } else if (lastData[3] >= 5 && currentData[3] < 5) {
